@@ -1,0 +1,10 @@
+.main {
+  padding: 40px;
+}
+h1 {
+  text-align: center;
+}
+.post-list {
+  display: flex;
+  gap: 20px;
+}
