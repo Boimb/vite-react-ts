@@ -7,7 +7,7 @@ function HomePage() {
   const [posts, setPosts] = useState<Post[]>();
 
   useEffect(() => {
-    fetch(`/posts/`)
+    fetch(`/api/posts/`)
       .then((res) => res.json())
       .then((json: Post[]) => {
         setPosts(json.filter(({ author }) => author.id === serverData.john.id));

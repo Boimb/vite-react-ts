@@ -1,11 +1,18 @@
 import { setupWorker } from "msw";
 import { db, seedDb } from "./db";
 
-const handlers = [...db.user.toHandlers("rest"), ...db.post.toHandlers("rest")];
-const worker = setupWorker(...handlers);
+export const handlers = [
+  ...db.user.toHandlers("rest", "/api"),
+  ...db.post.toHandlers("rest", "/api"),
+];
 
-export const setupFakeServ = () => {
+export const setupFakeWorker = () => {
   const data = seedDb();
-  worker.start();
+  if (import.meta.env.DEV === true) {
+    const worker = setupWorker(...handlers);
+    worker.start();
+  }
   return data;
 };
+
+// export const setupFakeServer = () => setupServer(...handlers);

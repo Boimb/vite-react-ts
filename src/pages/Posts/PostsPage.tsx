@@ -11,12 +11,10 @@ const PostPage = () => {
     status: FetchStatus.pending,
     message: "",
   });
-  console.log({ postId, data });
 
   useEffect(() => {
-    fetch(`/posts/${postId}`)
+    fetch(`/api/posts/${postId}`)
       .then(async (res) => {
-        console.log(res);
         if (res.status === 200) {
           const post = await res.json();
           return {
