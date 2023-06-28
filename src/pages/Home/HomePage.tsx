@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Post } from "../../types";
-import { johnId } from "../../../__mocks__/db";
 import PostCard from "./PostCard";
+import { serverData } from "../../main";
 
 function HomePage() {
   const [posts, setPosts] = useState<Post[]>();
@@ -10,7 +10,7 @@ function HomePage() {
     fetch(`/posts/`)
       .then((res) => res.json())
       .then((json: Post[]) => {
-        setPosts(json.filter(({ author }) => author.id === johnId));
+        setPosts(json.filter(({ author }) => author.id === serverData.john.id));
       });
   }, []);
 

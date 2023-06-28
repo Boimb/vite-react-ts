@@ -24,7 +24,6 @@ export const db = factory({
 
 export function seedDb() {
   const john = db.user.create({
-    id: johnId,
     firstName: "John",
     lastName: "Doe",
   });
@@ -35,4 +34,6 @@ export function seedDb() {
     db.post.create({ author: john, likes: [randomUsers[2], randomUsers[3]] }),
     db.post.create({ author: john, likes: [] }),
   ];
+
+  return { john, johnsPosts };
 }
