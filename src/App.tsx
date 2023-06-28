@@ -1,30 +1,20 @@
-import { useEffect, useState } from "react";
-import { johnId } from "../__mocks__/db";
-import { Post } from "./types";
-import PostCard from "./PostCard";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+import HomePage from "./pages/Home/HomePage";
+import PostPage from "./pages/Posts/PostsPage";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+  {
+    path: "posts/:postId",
+    element: <PostPage />,
+  },
+]);
 function App() {
-  const [posts, setPosts] = useState<Post[]>();
-
-  useEffect(() => {
-    fetch(`/posts/`)
-      .then((res) => res.json())
-      .then((json: Post[]) => {
-        setPosts(json.filter(({ author }) => author.id === johnId));
-      });
-  }, []);
-
-  return (
-    <div className="main">
-      <h1>My fake blog</h1>
-      <section className="post-list">
-        {posts?.map((post) => (
-          <PostCard key={`post-${post.id}`} post={post} />
-        ))}
-      </section>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

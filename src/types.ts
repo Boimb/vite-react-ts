@@ -11,3 +11,15 @@ export type Post = {
   content: string;
   likes: User[];
 };
+
+export enum FetchStatus {
+  pending,
+  error,
+  success,
+}
+
+export type FetchData<T> = {
+  status: FetchStatus;
+  data?: T;
+  message: string;
+};
