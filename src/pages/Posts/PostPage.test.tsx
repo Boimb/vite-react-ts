@@ -3,9 +3,12 @@ import { waitFor, screen, getByText } from "@testing-library/react";
 import { data } from "../../../__mocks__/server";
 import { render } from "../../utils/testUtils";
 import PostPage from "./PostsPage";
-import { rest } from "msw";
 import { server } from "../../../testSetup";
-import { fakeNavigate } from "../../../__mocks__/react-router-dom";
+import {
+  fakeNavigate,
+  fakeUseParams,
+} from "../../../__mocks__/react-router-dom";
+import { api } from "../../api/api";
 
 const article = data.johnsPosts[0];
 
@@ -17,7 +20,7 @@ afterEach(() => {
 });
 
 it("Should display post", async () => {
-  render(<PostPage />, { route: `/post/${article.id}` });
+  render(<PostPage />, { route: `/posts/${article.id}` });
   await waitFor(() => {
     expect(screen.getByText(article.title));
     expect(
@@ -30,7 +33,7 @@ it("Should display post", async () => {
 });
 
 it("Should redirect to Home", async () => {
-  const { user, debug } = render(<PostPage />, {
+  const { user } = render(<PostPage />, {
     route: `/post/${article.id}`,
   });
   await waitFor(() => {
@@ -41,20 +44,18 @@ it("Should redirect to Home", async () => {
 });
 
 it("Should display error message", async () => {
-  server.use(
-    rest.get(`/api/posts/:postId`, (req, res, ctx) => {
-      return res.once(ctx.status(404));
-    })
-  );
+  const unknownId = "123456";
+  fakeUseParams.mockReturnValue({
+    postId: unknownId,
+  });
 
-  render(<PostPage />, { route: `/post/${article.id}` });
+  render(<PostPage />, { route: `/posts/${unknownId}` });
   await waitFor(() => {
     expect(screen.getByTestId("PostNotFound"));
     expect(
-      screen.getByText(`Error while searching for post with id ${article.id}`, {
+      screen.getByText(`Error while searching for post with id ${unknownId}`, {
         exact: false,
       })
     );
-    expect(screen.getByText("Reason: Could not find post", { exact: false }));
   });
 });

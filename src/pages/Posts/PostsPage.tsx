@@ -1,45 +1,31 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { FetchData, FetchStatus, Post } from "../../types";
 import PostNotFound from "./PostNotFound";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { useGetPostsByIdQuery } from "../../api/api";
 
 const PostPage = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<FetchData<Post>>({
-    status: FetchStatus.pending,
-    message: "",
-  });
-
-  useEffect(() => {
-    fetch(`/api/posts/${postId}`)
-      .then(async (res) => {
-        if (res.status === 200) {
-          const post = await res.json();
-          return {
-            status: FetchStatus.success,
-            data: post,
-            message: "",
-          };
-        }
-        return {
-          status: FetchStatus.error,
-          message: "Could not find post",
-        };
-      })
-      .then((v: FetchData<Post>) => {
-        setData(v);
-      });
-  }, [postId]);
+  const { data, isFetching, isError, error } = useGetPostsByIdQuery(
+    {
+      // We can disable no-non-null-assertion cause skip props force postId to be defined
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      id: postId!,
+    },
+    { skip: !postId }
+  );
 
   return (
     <Box>
-      {data.status === FetchStatus.pending && <span>Loading</span>}
-      {data.status === FetchStatus.error && postId && (
-        <PostNotFound message={data.message} postId={postId} />
+      {isFetching && (
+        <Box width="100%" display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
       )}
-      {data.status === FetchStatus.success && (
+      {isError && postId && "status" in error && (
+        <PostNotFound postId={postId} />
+      )}
+      {!isFetching && !isError && (
         <>
           <Box display="flex" justifyContent="flex-end">
             <Button
@@ -51,14 +37,14 @@ const PostPage = () => {
             </Button>
           </Box>
           <Typography variant="h3" textTransform="uppercase">
-            {data.data?.title}
+            {data?.title}
           </Typography>
           <Typography variant="caption">
-            By:&nbsp;{data.data?.author.firstName}&nbsp;
-            {data.data?.author.lastName}
+            By:&nbsp;{data?.author.firstName}&nbsp;
+            {data?.author.lastName}
           </Typography>
           <Typography variant="body1" mt={3}>
-            {data.data?.content}
+            {data?.content}
           </Typography>
         </>
       )}
