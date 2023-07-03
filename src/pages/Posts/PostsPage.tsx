@@ -1,12 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import "./PostPage.css";
 import { useEffect, useState } from "react";
 import { FetchData, FetchStatus, Post } from "../../types";
 import PostNotFound from "./PostNotFound";
+import { Box, Button, Typography } from "@mui/material";
 
 const PostPage = () => {
   const { postId } = useParams();
-  console.log({ postId });
   const navigate = useNavigate();
   const [data, setData] = useState<FetchData<Post>>({
     status: FetchStatus.pending,
@@ -35,27 +34,35 @@ const PostPage = () => {
   }, [postId]);
 
   return (
-    <div>
+    <Box>
       {data.status === FetchStatus.pending && <span>Loading</span>}
       {data.status === FetchStatus.error && postId && (
         <PostNotFound message={data.message} postId={postId} />
       )}
       {data.status === FetchStatus.success && (
         <>
-          <button data-testid="BackHome-Button" onClick={() => navigate("/")}>
-            Back Home
-          </button>
-          <h2>{data.data?.title}</h2>
-          <pre>
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              data-testid="BackHome-Button"
+              variant="outlined"
+              onClick={() => navigate("/")}
+            >
+              Back Home
+            </Button>
+          </Box>
+          <Typography variant="h3" textTransform="uppercase">
+            {data.data?.title}
+          </Typography>
+          <Typography variant="caption">
             By:&nbsp;{data.data?.author.firstName}&nbsp;
             {data.data?.author.lastName}
-          </pre>
-          <div>
-            <p>{data.data?.content}</p>
-          </div>
+          </Typography>
+          <Typography variant="body1" mt={3}>
+            {data.data?.content}
+          </Typography>
         </>
       )}
-    </div>
+    </Box>
   );
 };
 

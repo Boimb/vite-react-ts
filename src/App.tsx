@@ -1,5 +1,4 @@
 import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
-import "./App.css";
 import HomePage from "./pages/Home/HomePage";
 import PostPage from "./pages/Posts/PostsPage";
 import {
@@ -22,7 +21,7 @@ const Layout = () => (
         </Link>
       </Toolbar>
     </AppBar>
-    <Box mt={8}>
+    <Box mt={11} px={3}>
       <Outlet />
     </Box>
   </ThemeProvider>

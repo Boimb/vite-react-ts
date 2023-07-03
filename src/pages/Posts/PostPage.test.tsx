@@ -51,8 +51,10 @@ it("Should display error message", async () => {
   await waitFor(() => {
     expect(screen.getByTestId("PostNotFound"));
     expect(
-      screen.getByText(`Error while searching for post with id ${article.id}`)
+      screen.getByText(`Error while searching for post with id ${article.id}`, {
+        exact: false,
+      })
     );
-    expect(screen.getByText("Reason: Could not find post"));
+    expect(screen.getByText("Reason: Could not find post", { exact: false }));
   });
 });

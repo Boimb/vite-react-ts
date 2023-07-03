@@ -1,3 +1,4 @@
+import { Alert, Box } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -5,11 +6,14 @@ const PostNotFound: React.FC<{ postId: string; message: string }> = ({
   postId,
   message,
 }) => (
-  <div data-testid="PostNotFound">
-    <p>Error while searching for post with id {postId}</p>
-    <p>Reason: {message}</p>
+  <Box data-testid="PostNotFound">
+    <Alert variant="filled" color="error">
+      {`Error while searching for post with id ${postId}`}
+      <br />
+      {`Reason: ${message}`}
+    </Alert>
     <Link to="/">Back Home</Link>
-  </div>
+  </Box>
 );
 
 export default PostNotFound;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Post } from "../../types";
 import PostCard from "./PostCard";
 import { data } from "../../../__mocks__/server";
+import { Box, Typography } from "@mui/material";
 
 function HomePage() {
   const [posts, setPosts] = useState<Post[]>();
@@ -14,14 +15,22 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="main" data-testid="HomePage">
-      <h1>My fake blog</h1>
-      <section className="post-list">
+    <Box data-testid="HomePage">
+      <Typography variant="h1" textAlign="center" mb={4}>
+        My fake blog
+      </Typography>
+      <Box
+        component="section"
+        display="flex"
+        flexWrap="wrap"
+        gap={4}
+        justifyContent="flex-start"
+      >
         {posts?.map((post) => (
           <PostCard key={`post-${post.id}`} post={post} />
         ))}
-      </section>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

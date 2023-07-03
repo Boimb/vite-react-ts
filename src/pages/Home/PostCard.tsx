@@ -1,26 +1,59 @@
 import React from "react";
 import { Post } from "../../types";
-import "./PostCard.css";
 import { useNavigate } from "react-router-dom";
+import {
+  Badge,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from "@mui/material";
+import { HeartOutline } from "mdi-material-ui";
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const navigate = useNavigate();
   return (
-    <div
+    <Card
       className="post-container"
       onClick={() => {
         navigate(`/posts/${post.id}`);
       }}
       data-testid="PostCard"
+      sx={{
+        width: "400px",
+        maxWidth: "400px",
+        minWidth: "400px",
+        ":hover": {
+          boxShadow: 3,
+          cursor: "pointer",
+        },
+      }}
     >
-      <h2>{post.title}</h2>
-      <pre>{`By: ${post.author.firstName} ${post.author.lastName}`}</pre>
-      <p className="post-content">{post.content}</p>
-      <div className="post-footer">
-        <span>Likes:&nbsp;</span>
-        <span>{post.likes.length}</span>
-      </div>
-    </div>
+      <CardContent>
+        <Typography
+          variant="h4"
+          noWrap
+          width="350px"
+          textTransform="capitalize"
+        >
+          {post.title}
+        </Typography>
+        <Typography variant="caption">{`By: ${post.author.firstName} ${post.author.lastName}`}</Typography>
+        <Typography
+          className="post-content"
+          variant="body1"
+          maxHeight={170}
+          overflow="hidden"
+        >
+          {post.content}
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ justifyContent: "flex-end", mx: 2 }}>
+        <Badge badgeContent={post.likes.length} color="error">
+          <HeartOutline color="error" />
+        </Badge>
+      </CardActions>
+    </Card>
   );
 };
 
