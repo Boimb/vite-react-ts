@@ -6,6 +6,7 @@ import PostNotFound from "./PostNotFound";
 
 const PostPage = () => {
   const { postId } = useParams();
+  console.log({ postId });
   const navigate = useNavigate();
   const [data, setData] = useState<FetchData<Post>>({
     status: FetchStatus.pending,
@@ -41,7 +42,9 @@ const PostPage = () => {
       )}
       {data.status === FetchStatus.success && (
         <>
-          <button onClick={() => navigate("/")}>Back Home</button>
+          <button data-testid="BackHome-Button" onClick={() => navigate("/")}>
+            Back Home
+          </button>
           <h2>{data.data?.title}</h2>
           <pre>
             By:&nbsp;{data.data?.author.firstName}&nbsp;

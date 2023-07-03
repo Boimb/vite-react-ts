@@ -5,11 +5,9 @@ const PostNotFound: React.FC<{ postId: string; message: string }> = ({
   postId,
   message,
 }) => (
-  <div>
+  <div data-testid="PostNotFound">
     <p>Error while searching for post with id {postId}</p>
-    <p>
-      Reason: <pre>{message}</pre>
-    </p>
+    <p>Reason: {message}</p>
     <Link to="/">Back Home</Link>
   </div>
 );

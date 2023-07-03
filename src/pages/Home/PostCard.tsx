@@ -11,6 +11,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
       onClick={() => {
         navigate(`/posts/${post.id}`);
       }}
+      data-testid="PostCard"
     >
       <h2>{post.title}</h2>
       <pre>{`By: ${post.author.firstName} ${post.author.lastName}`}</pre>
