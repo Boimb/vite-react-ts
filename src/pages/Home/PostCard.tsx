@@ -35,6 +35,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           noWrap
           width="350px"
           textTransform="capitalize"
+          data-testid="PostCard-title"
         >
           {post.title}
         </Typography>
